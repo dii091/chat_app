@@ -1,0 +1,36 @@
+require('dotenv').config();
+
+const app = require('./src/app'); 
+const {sequelize, connectDB} = require('./src/configs/database'); // Import sequelize và connectDB từ file cấu hình database
+const User = require('./src/models/user.model');
+const PORT = process.env.PORT || 3000;
+
+async function startServer() {
+    // 1. Kết nối đến database
+    await connectDB(); // Gọi hàm kiểm tra kết nối từ database.js
+
+    // 2. Đồng bộ hóa các model với database (tạo bảng nếu chưa tồn tại)
+    // CHÚ Ý QUAN TRỌNG:
+    // `force: false` nghĩa là: Nếu bảng đã tồn tại, KHÔNG làm gì cả.
+    // `force: true` nghĩa là: Nếu bảng đã tồn tại, HÃY XÓA NÓ VÀ TẠO LẠI.
+    // Dùng `force: true` chỉ trong môi trường phát triển (development) để tiện reset DB.
+    // Trong môi trường production, bạn sẽ dùng Sequelize Migrations để quản lý thay đổi schema.
+    try {
+        await sequelize.sync({ force: false });
+        console.log('Đã đồng bộ hóa các model với database.');
+    } catch (error) {
+        console.error('Lỗi khi đồng bộ hóa database:', error);
+        process.exit(1); // Thoát ứng dụng nếu không thể đồng bộ hóa
+    }
+
+    // 3. Khởi động server lắng nghe các yêu cầu HTTP
+    app.listen(PORT, () => {
+        console.log(`Server đang chạy trên cổng ${PORT}`);
+        console.log(`Truy cập API tại: http://localhost:${PORT}/api/v1`);
+    });
+}
+
+startServer().catch(error => {
+    console.error('Lỗi khi khởi động server:', error);
+    process.exit(1); // Thoát ứng dụng nếu có lỗi
+});
