@@ -9446,3 +9446,5 @@ backend/node_modules/yocto-queue/license
 backend/node_modules/yocto-queue/package.json
 backend/node_modules/yocto-queue/readme.md
 backend/sample.env
+backend/package-lock.json
+backend/package.json
