@@ -1,3 +1,4 @@
+const { error } = require('winston');
 const userRepository = require('../repositories/user.repository');
 const bcrypt = require('bcryptjs');
 
@@ -16,8 +17,8 @@ class UserService {
         } catch (error) {
             throw new Error('Error fetching users: ' + error.message);
         }
-    } 
-    
+    }
+
     async getUserById(id) {
         const user = await userRepository.findById(id);
 
@@ -35,9 +36,11 @@ class UserService {
         }
         return data;
     }
-
+    // {
+    // }
     async register(userData) {
         const existingUser = await userRepository.findByEmail(userData.email);
+
         if (existingUser) {
             const error = new Error('Người dùng đã tồn tại');
             error.statusCode = 400;
@@ -51,6 +54,12 @@ class UserService {
             throw error;
         }
 
+        if (!userData.confirmPassword) {
+            const error = new Error('Chưa nhập lại mật khẩu');
+            error.statusCode = 400;
+            throw error;
+        }
+
         if (userData.password !== userData.confirmPassword) {
             const error = new Error('Mật khẩu không khớp');
             error.statusCode = 400;
@@ -59,7 +68,6 @@ class UserService {
 
         try {
             // Loại bỏ confirmPassword trước khi lưu
-            userData.password = await bcrypt.hash(userData.password, 10);
             return await userRepository.create(userData);
         } catch (error) {
             throw new Error('Error creating user: ' + error.message);
@@ -97,7 +105,6 @@ class UserService {
                 throw error;
             }
 
-            userData.password = await bcrypt.hash(userData.password, 10);
         }
 
         // Loại bỏ confirmPassword trước khi lưu
