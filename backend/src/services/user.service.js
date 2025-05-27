@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 class UserService {
     async getAllUsers() {
         try {
-            const users = await userRepository.findAll();
+            const users = await userRepository.findAll(); //users 
             return users.map(user => ({
                 id: user.id,
                 username: user.username,
