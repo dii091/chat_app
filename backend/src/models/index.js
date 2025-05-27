@@ -1,7 +1,7 @@
 // src/models/index.js
 const { sequelize } = require('../configs/database');
 const User = require('./user.model');
-const Conversation = require('./conservation.model');
+const Conversation = require('./conversation.model');
 const Message = require('./message.model');
 const ConversationMember = require('./conservationMember.model');
 const Notification = require('./notification.model');
