@@ -1,6 +1,6 @@
 const userService = require('../services/user.service');
 
-const getAllUsers = async (req, res, next) => {
+const getAllUsers = async (req, res, next) => { //get
     try {
         const users = await userService.getAllUsers();
         res.status(200).json(
@@ -8,7 +8,7 @@ const getAllUsers = async (req, res, next) => {
                 status: 200,
                 success: true,
                 data: users,
-                message: 'Lấy danh sách người dùng thành công'
+                message: 'Lấy danh sách người dùng thành công',
             }
         );
     } catch (error) {
@@ -30,7 +30,7 @@ const getUserById = async (req, res, next) => {
     }
 };
 
-const register = async (req, res, next) => {
+const register = async (req, res, next) => { //post
     try {
         const newUser = await userService.register(req.body);
         res.status(201).json({
@@ -44,7 +44,7 @@ const register = async (req, res, next) => {
     }
 };
 
-const updateUser = async (req, res, next) => {
+const updateUser = async (req, res, next) => { //put 
     try {
         const updatedUser = await userService.updateUser(req.params.id, req.body);
         res.status(200).json({
@@ -58,7 +58,7 @@ const updateUser = async (req, res, next) => {
     }
 };
 
-const deleteUser = async (req, res, next) => {
+const deleteUser = async (req, res, next) => { //delete
     try {
         await userService.deleteUser(req.params.id);
         res.status(200).json({

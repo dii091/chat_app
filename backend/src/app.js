@@ -30,10 +30,6 @@ app.use('/api/v1/users', userRouter)
 
 
 // Import message routes
-const messageRoutes = require('./routes/messageRoutes');
-
-// Apply message routes
-app.use('/api/v1/messages', messageRoutes);
 
 // Error handling middleware
 app.use((req, res, next) => {

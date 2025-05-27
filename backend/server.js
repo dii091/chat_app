@@ -2,7 +2,15 @@ require('dotenv').config();
 
 const app = require('./src/app'); 
 const {sequelize, connectDB} = require('./src/configs/database'); // Import sequelize và connectDB từ file cấu hình database
-const User = require('./src/models/user.model');
+
+// Import tất cả models để đảm bảo chúng được đăng ký với Sequelize
+require('./src/models/index'); // Import models và associations
+require('./src/models/user.model'); // Import model User
+require('./src/models/conservationMember.model'); // Import model Conversation
+require('./src/models/message.model'); // Import model Message
+require('./src/models/conservationMember.model'); // Import model ConversationMember
+require('./src/models/notification.model'); // Import model Notification
+
 const PORT = process.env.PORT || 3000;
 
 async function startServer() {
