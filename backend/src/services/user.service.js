@@ -44,19 +44,6 @@ class UserService {
             throw error;
         }
 
-        var password = userData.password;
-        if (!password || password.trim() === '') {
-            const error = new Error('Mật khẩu không được để trống');
-            error.statusCode = 400;
-            throw error;
-        }
-
-        if (userData.password !== userData.confirmPassword) {
-            const error = new Error('Mật khẩu không khớp');
-            error.statusCode = 400;
-            throw error;
-        }
-
         try {
             // Loại bỏ confirmPassword trước khi lưu
             userData.password = await bcrypt.hash(userData.password, 10);
