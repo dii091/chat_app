@@ -47,25 +47,6 @@ class UserService {
             throw error;
         }
 
-        var password = userData.password;
-        if (!password || password.trim() === '') {
-            const error = new Error('Mật khẩu không được để trống');
-            error.statusCode = 400;
-            throw error;
-        }
-
-        if (!userData.confirmPassword) {
-            const error = new Error('Chưa nhập lại mật khẩu');
-            error.statusCode = 400;
-            throw error;
-        }
-
-        if (userData.password !== userData.confirmPassword) {
-            const error = new Error('Mật khẩu không khớp');
-            error.statusCode = 400;
-            throw error;
-        }
-
         try {
             // Loại bỏ confirmPassword trước khi lưu
             return await userRepository.create(userData);
@@ -129,6 +110,26 @@ class UserService {
         } catch (error) {
             throw new Error('Error deleting user: ' + error.message);
         }
+    }
+
+    async findByEmail(email) {
+        const user = await userRepository.findByEmail(email);
+        if (!user) {
+            const error = new Error('Người dùng không tồn tại');
+            error.statusCode = 404;
+            throw error;
+        }
+        return user;
+    }
+
+    async verifyPassword(plainPassword, hashedPassword) {
+        const isMatch = await bcrypt.compare(plainPassword, hashedPassword);
+        if (!isMatch) {
+            const error = new Error('Email hoặc mật khẩu không đúng');
+            error.statusCode = 401;
+            throw error;
+        }
+        return true;
     }
 }
 
