@@ -6,6 +6,7 @@ const app = express();
 const userRouter = require('./routes/user.routes');
 const conversationRouter = require('./routes/conversation.routes');
 const messageRouter = require('./routes/message.routes');
+const authRouter = require('./routes/auth.routes');
 // const notificationRouter = require('./routes/notification.routes');
 
 // Middleware
@@ -33,6 +34,7 @@ app.get('/api/v1/', (req, res) => {
 app.use('/api/v1/users', userRouter)
 app.use('/api/v1/conversations', conversationRouter)
 app.use('/api/v1/messages', messageRouter)
+app.use('/api/v1/auth', authRouter);
 // app.use('/api/v1/notifications', notificationRouter);
 // Import message routes
 

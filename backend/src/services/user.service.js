@@ -110,6 +110,26 @@ class UserService {
             throw new Error('Error deleting user: ' + error.message);
         }
     }
+
+    async findByEmail(email) {
+        const user = await userRepository.findByEmail(email);
+        if (!user) {
+            const error = new Error('Người dùng không tồn tại');
+            error.statusCode = 404;
+            throw error;
+        }
+        return user;
+    }
+
+    async verifyPassword(plainPassword, hashedPassword) {
+        const isMatch = await bcrypt.compare(plainPassword, hashedPassword);
+        if (!isMatch) {
+            const error = new Error('Email hoặc mật khẩu không đúng');
+            error.statusCode = 401;
+            throw error;
+        }
+        return true;
+    }
 }
 
 module.exports = new UserService();
